@@ -6,16 +6,18 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.rules.Timeout;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.nio.file.Paths;
+import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-public class ForgotPassword{
+public class TestSteps {
     private WebDriver driver;
 
     @Before
@@ -27,6 +29,8 @@ public class ForgotPassword{
         if (driver == null) {
             driver = new ChromeDriver();
         }
+
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     }
 
     @After
@@ -69,4 +73,21 @@ public class ForgotPassword{
         assertThat(actualMessage.trim(), not("Your e-mail's been sent!"));
     }
 
+    @Given("A User Navigates to StatusCodes Page")
+    public void aUserNavigatesToStatusCodesPage() {
+        driver.navigate().to("https://the-internet.herokuapp.com/status_codes");
+    }
+
+    @When("A User Clicks on status Code {int}")
+    public void aUserClicksOnStatusCodeInput(Integer inputCode) {
+        driver.findElement(By.partialLinkText(inputCode.toString())).click();
+    }
+
+    @Then("Application displays the message {int}")
+    public void applicationDisplaysTheMessageOutputCode(Integer outputCode) {
+        String expectedMessage = "This page returned a "+outputCode.toString()+" status code.";
+        String actualMessage = driver.findElement(By.cssSelector("h3 + p")).getText();
+
+        assertThat(actualMessage, containsString(expectedMessage));
+    }
 }

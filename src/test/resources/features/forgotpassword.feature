@@ -1,4 +1,6 @@
+@forgotpassword
 Feature: Forgot password
+
   Scenario: A valid email id is allowed
     Given Navigate to Page ForgotPassword
     When A User enters a valid email id
