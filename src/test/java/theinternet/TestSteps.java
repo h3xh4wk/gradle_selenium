@@ -23,8 +23,13 @@ public class TestSteps {
     @Before
     public void setUp() {
 
-        System.setProperty("webdriver.chrome.driver",
-                Paths.get("src/test/resources/chromedriver_win32/chromedriver.exe").toString());
+        // ChromeDriver path on development machine, which is Windows
+        String OS = System.getProperty("os.name");
+        if (OS.startsWith("Windows")) {
+            System.setProperty("webdriver.chrome.driver",
+                    Paths.get("src/test/resources/chromedriver_win32/chromedriver.exe").toString());
+
+        }
 
         if (driver == null) {
             driver = new ChromeDriver();
