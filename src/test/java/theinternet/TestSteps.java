@@ -20,6 +20,7 @@ import static org.hamcrest.Matchers.*;
 
 public class TestSteps {
     private WebDriver driver;
+    static String TestString;
 
     @Before
     public void setUp() {
